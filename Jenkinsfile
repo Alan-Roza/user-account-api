@@ -15,6 +15,12 @@ pipeline {
             }
         }
 
+        stage('Build Project') {
+                    steps {
+                         sh 'mvn clean install'
+                    }
+                }
+
         stage('Start container') {
             steps {
                 sh 'docker-compose up -d --no-color --wait'
@@ -28,11 +34,7 @@ pipeline {
             }
         }
 
-        stage('Build Project') {
-            steps {
-                 sh 'mvn clean install'
-            }
-        }
+
 
         stage('Build Docker Image') {
             steps {
