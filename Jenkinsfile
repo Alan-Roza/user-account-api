@@ -19,10 +19,10 @@ pipeline {
             steps {
                 script {
                     // Pull the Docker image from Docker Hub
-                    sh "docker pull rozaworks/user-account-api:${env.BUILD_ID}"
+                    sh "docker pull rozaworks/user-account-api"
 
                     // Start the container using the pulled image
-                    sh 'docker run -d --name account-api -p 9090:9090 rozaworks/user-account-api:${env.BUILD_ID}'
+                    sh 'docker run -d --name account-api -p 9090:9090 rozaworks/user-account-api'
                 }
             }
         }
