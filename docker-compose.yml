@@ -9,6 +9,14 @@ services:
     volumes:
     - db-volume:/var/lib/postgresql/data
 
+  h2-database:
+    image: h2database/h2:latest
+    container_name: h2-database
+    ports:
+      - "8082:8082"
+    volumes:
+      - h2-data:/data
+
   api:
     image: rozaworks/user-account-api
     environment:
@@ -17,3 +25,4 @@ services:
       - "9090:9090"
 volumes:
   db-volume:
+  h2-data:
