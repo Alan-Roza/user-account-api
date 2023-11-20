@@ -24,11 +24,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Define the Docker image name and tag
-                    def dockerImage = "rozaworks/user-account-api:latest"
-
-                    // Build the Docker image
-                    sh "docker build -t ${dockerImage} ."
+                    dockerImage = docker.build("rozaworks/user-account-api:${env.BUILD_ID}")
                 }
             }
         }
@@ -36,14 +32,10 @@ pipeline {
         stage('Push Docker Image to DockerHub') {
             steps {
                 script {
-                    // Define the Docker image name and tag
-                    def dockerImage = "rozaworks/user-account-api:latest"
-
-                    // Authenticate with Docker Hub
-                    sh "docker login -u rozaworks -p n@lA122804"
-
-                    // Push the Docker image to Docker Hub
-                    sh "docker push ${dockerImage}"
+                    docker.withRegistry('https://registry.hub.docker.com', 'DockerHub') {
+                        dockerImage.push('lastest')
+                        dockerImage.push("${env.BUILD_ID}")
+                    }
                 }
             }
         }

@@ -5,7 +5,7 @@ services:
     image: postgres
     environment:
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: papi
+      POSTGRES_DB: accountApi
     volumes:
     - db-volume:/var/lib/postgresql/data
 
