@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage("verify tooling") {
+        stage("Verify tooling") {
             steps {
                 script {
                     sh '''
@@ -15,19 +15,28 @@ pipeline {
             }
         }
 
-        stage('Start container') {
+        stage('Pull and start container') {
             steps {
-                sh 'docker-compose up -d --no-color --wait'
-                sh 'docker-compose ps'
+                script {
+                    // Pull the Docker image from Docker Hub
+                    sh "docker pull rozaworks/user-account-api:${env.BUILD_ID}"
+
+                    // Start the container using the pulled image
+                    sh 'docker run -d --name account-api -p 9090:9090 rozaworks/user-account-api:${env.BUILD_ID}'
+                }
             }
         }
 
         stage('Run tests against the container') {
             steps {
-                sh 'curl http://localhost:9090'
+                script {
+                    // Wait for the container to be ready (adjust as needed)
+                    sleep time: 30, unit: 'SECONDS'
+
+                    // Run tests against the running container
+                    sh 'curl http://localhost:9090'
+                }
             }
         }
-
-
     }
 }
