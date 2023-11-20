@@ -1,22 +1,16 @@
-package com.projects.userAccountApi;
-
-import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-//import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.MockitoAnnotations;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.projects.userAccountApi.repository.UserRepository;
 import com.projects.userAccountApi.service.LoginService;
-
 import com.projects.userAccountApi.controller.form.LoginForm;
 import com.projects.userAccountApi.model.User;
 
-//@SpringBootTest
-@RunWith(SpringRunner.class)
 public class LoginServiceTest {
 
     @InjectMocks
@@ -24,6 +18,11 @@ public class LoginServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     public void successfullyUserLoginUsingValidCredentials() {
@@ -54,7 +53,7 @@ public class LoginServiceTest {
     }
 
     @Test
-    public void userBlockedAfterSixUnsuccessfulLoginAttempts() throws InterruptedException {
+    public void userBlockedAfterSixUnsuccessfulLoginAttempts() {
         int attemptsLimit = 6;
 
         User mockUser = new User();
@@ -64,19 +63,18 @@ public class LoginServiceTest {
 
         Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
 
-        try {
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             for (int i = 0; i <= attemptsLimit; i++) {
                 boolean isUserAuthenticated = loginService.authenticateUser(new LoginForm("test@example.com", "wrongpassword"));
                 assertFalse(isUserAuthenticated);
             }
-            fail("Expected RuntimeException, but it was not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("Credencial bloqueada temporariamente, tente novamente em 3 horas.", e.getMessage());
-        }
+        });
+
+        assertEquals("Credencial bloqueada temporariamente, tente novamente em 3 horas.", exception.getMessage());
     }
 
     @Test
-    public void unsuccessfulLoginWithEmptyField() throws InterruptedException {
+    public void unsuccessfulLoginWithEmptyField() {
         User mockUser = new User();
         mockUser.setEmail("test@example.com");
         mockUser.setPassword("password123");
@@ -84,17 +82,15 @@ public class LoginServiceTest {
 
         Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
 
-        try {
-        	assertFalse(loginService.authenticateUser(new LoginForm("test@example.com", "")));
-        	assertFalse(loginService.authenticateUser(new LoginForm("", "password123")));
-        	assertFalse(loginService.authenticateUser(new LoginForm("", "")));
-        	assertFalse(loginService.authenticateUser(new LoginForm(null, "")));
-        	assertFalse(loginService.authenticateUser(new LoginForm("test@example.com", null)));
-        	assertFalse(loginService.authenticateUser(new LoginForm(null, null)));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            assertFalse(loginService.authenticateUser(new LoginForm("test@example.com", "")));
+            assertFalse(loginService.authenticateUser(new LoginForm("", "password123")));
+            assertFalse(loginService.authenticateUser(new LoginForm("", "")));
+            assertFalse(loginService.authenticateUser(new LoginForm(null, "")));
+            assertFalse(loginService.authenticateUser(new LoginForm("test@example.com", null)));
+            assertFalse(loginService.authenticateUser(new LoginForm(null, null)));
+        });
 
-            fail("Expected RuntimeException, but it was not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("E-mail e Senha são obrigatórios!", e.getMessage());
-        }
+        assertEquals("E-mail e Senha são obrigatórios!", exception.getMessage());
     }
 }
