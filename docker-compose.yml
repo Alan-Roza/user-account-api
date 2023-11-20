@@ -4,8 +4,8 @@ services:
   database:
     image: postgres
     environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: accountApi
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: postgres
     volumes:
     - db-volume:/var/lib/postgresql/data
 
