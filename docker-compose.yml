@@ -10,7 +10,7 @@ services:
     - db-volume:/var/lib/postgresql/data
 
   api:
-    image: lelesd2m2s10/praticando-api
+    image: rozaworks/user-account-api
     environment:
       DB_HOST: database
     ports:
