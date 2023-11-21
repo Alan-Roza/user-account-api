@@ -17,4 +17,3 @@ services:
       - "9090:9090"
 volumes:
   db-volume:
-  h2-data:
