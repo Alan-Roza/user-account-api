@@ -25,10 +25,6 @@ pipeline {
     stage('Run tests against the container') {
       steps {
         script {
-            // Add a sleep of 30 seconds
-            sleep(time: 30, unit: 'SECONDS')
-
-            // Now run your tests
             sh 'curl http://localhost:9090'
         }
       }
