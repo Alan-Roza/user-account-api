@@ -1,3 +1,5 @@
+package com.projects.userAccountApi;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.mockito.InjectMocks;
@@ -10,7 +12,9 @@ import com.projects.userAccountApi.repository.UserRepository;
 import com.projects.userAccountApi.service.LoginService;
 import com.projects.userAccountApi.controller.form.LoginForm;
 import com.projects.userAccountApi.model.User;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest(classes = LoginServiceTest.class)
 public class LoginServiceTest {
 
     @InjectMocks
