@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  database_prod:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: postgres
+    volumes:
+    - db-volume:/var/lib/postgresql/data
+
+  api_prod:
+    image: rozaworks/user-account-api
+    environment:
+      DB_HOST: database_prod
+    ports:
+      - "8181:9090"
+volumes:
+  db-volume:
