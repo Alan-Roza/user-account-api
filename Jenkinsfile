@@ -24,6 +24,7 @@ pipeline {
     }
     stage('Run tests against the container') {
       steps {
+        bat 'timeout /T 30 /NOBREAK'
         bat 'curl http://localhost:9090'
       }
     }
