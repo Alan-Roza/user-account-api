@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  database:
+  database_stage:
     image: postgres
     environment:
       POSTGRES_PASSWORD: password123
@@ -9,11 +9,11 @@ services:
     volumes:
     - db-volume:/var/lib/postgresql/data
 
-  api:
+  api_stage:
     image: rozaworks/user-account-api
     environment:
-      DB_HOST: database
+      DB_HOST: database_stage
     ports:
-      - "9090:9090"
+      - "9292:9090"
 volumes:
   db-volume:
