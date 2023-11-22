@@ -4,13 +4,13 @@ services:
   database:
     image: postgres
     environment:
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: password123
       POSTGRES_DB: postgres
     volumes:
     - db-volume:/var/lib/postgresql/data
 
   api:
-    image: rozaworks/user-account-api
+    image: rozaworks/user-account-api:latest
     environment:
       DB_HOST: database
     ports:
