@@ -10,7 +10,7 @@ services:
     - db-volume:/var/lib/postgresql/data
 
   api:
-    image: rozaworks/user-account-api:latest
+    image: rozaworks/user-account-api
     environment:
       DB_HOST: database
     ports:
