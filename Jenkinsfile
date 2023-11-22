@@ -24,8 +24,13 @@ pipeline {
     }
     stage('Run tests against the container') {
       steps {
-        bat 'ping -n 30 127.0.0.1 > nul'
-        bat 'curl http://localhost:9090'
+        script {
+            // Add a sleep of 30 seconds
+            sleep(time: 30, unit: 'SECONDS')
+
+            // Now run your tests
+            sh 'curl http://localhost:9090'
+        }
       }
     }
   }
