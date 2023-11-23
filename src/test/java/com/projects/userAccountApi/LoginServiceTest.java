@@ -45,7 +45,7 @@ public class LoginServiceTest {
     @Test
     public void unsuccessfulUserLoginUsingInvalidCredentials() {
         User mockUser = new User();
-        mockUser.setEmail("test@example.com");
+        mockUser.setEmail("test@example.om");
         mockUser.setPassword("password123");
         mockUser.setFailTries(0);
 
