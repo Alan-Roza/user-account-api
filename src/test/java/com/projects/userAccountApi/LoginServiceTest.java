@@ -35,7 +35,7 @@ public class LoginServiceTest {
         mockUser.setPassword("password123");
         mockUser.setFailTries(0);
 
-        Mockito.when(userRepository.findByEmail("test@example.om")).thenReturn(mockUser);
+        Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
 
         boolean isUserAuthenticated = loginService.authenticateUser(new LoginForm("test@example.com", "password123"));
 
