@@ -1,1 +1,1 @@
-INSERT INTO user(name, email, password, fail_tries_counter) VALUES('macarrao', 'macarrao@gmail.com', 'meumacarrao', 0);
+INSERT INTO users(name, email, password, fail_tries_counter) VALUES('macarrao', 'macarrao@gmail.com', 'meumacarrao', 0);
