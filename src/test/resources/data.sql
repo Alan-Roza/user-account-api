@@ -1,10 +1,3 @@
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255),
-    email VARCHAR(255),
-    password VARCHAR(255),
-    fail_tries_counter INTEGER,
-    blocking_datetime TIMESTAMP
-);
-
-INSERT INTO users(name, email, password, fail_tries_counter) VALUES('macarrao', 'macarrao@gmail.com', 'meumacarrao', 0);
+INSERT INTO users(name, email, password, fail_tries_counter, blocking_datetime) VALUES
+    ('John Doe', 'john@example.com', 'secure456', 0, NULL),
+    ('test user', 'test@example.com', 'password123', 0, NULL);
