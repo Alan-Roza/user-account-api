@@ -41,7 +41,7 @@ pipeline {
             [
               type: 'button',
               text: 'Deploy to production',
-              url: 'http://localhost:8180/job/user-account-api-PROD/build?delay=0sec/build?token=13b1c16cf1ad49a1b9d210313e41fb31',
+              url: 'http://localhost:8180/job/user-account-api-PROD/build?token=13b1c16cf1ad49a1b9d210313e41fb31'
               style: 'primary'
             ]
           ]
