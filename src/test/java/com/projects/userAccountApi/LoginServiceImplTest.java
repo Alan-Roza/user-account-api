@@ -3,9 +3,10 @@ package com.projects.userAccountApi;
 import com.projects.userAccountApi.controller.LoginController;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -14,6 +15,8 @@ import com.projects.userAccountApi.service.impl.LoginServiceImpl;
 import com.projects.userAccountApi.controller.form.LoginForm;
 import com.projects.userAccountApi.model.User;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.time.LocalDateTime;
 
 @SpringBootTest(classes = LoginServiceImplTest.class)
 public class LoginServiceImplTest {
@@ -39,7 +42,7 @@ public class LoginServiceImplTest {
         mockUser.setPassword("password123");
         mockUser.setFailTries(0);
 
-        Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
+        when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
 
         boolean isUserAuthenticated = loginServiceImpl.authenticateUser(new LoginForm("test@example.com", "password123"));
 
@@ -53,7 +56,7 @@ public class LoginServiceImplTest {
         mockUser.setPassword("password123");
         mockUser.setFailTries(0);
 
-        Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
+        when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
 
         boolean isUserAuthenticated = loginServiceImpl.authenticateUser(new LoginForm("test@example.com", "wrongpassword"));
 
@@ -69,7 +72,7 @@ public class LoginServiceImplTest {
         mockUser.setPassword("password123");
         mockUser.setFailTries(0);
 
-        Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
+        when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             for (int i = 0; i <= attemptsLimit; i++) {
@@ -88,7 +91,7 @@ public class LoginServiceImplTest {
         mockUser.setPassword("password123");
         mockUser.setFailTries(0);
 
-        Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
+        when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             assertFalse(loginServiceImpl.authenticateUser(new LoginForm("test@example.com", "")));
@@ -104,7 +107,7 @@ public class LoginServiceImplTest {
         mockUser.setPassword("password123");
         mockUser.setFailTries(0);
 
-        Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
+        when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             assertFalse(loginServiceImpl.authenticateUser(new LoginForm("", "password123")));
@@ -120,7 +123,7 @@ public class LoginServiceImplTest {
         mockUser.setPassword("password123");
         mockUser.setFailTries(0);
 
-        Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
+        when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             assertFalse(loginServiceImpl.authenticateUser(new LoginForm("", "")));
@@ -136,7 +139,7 @@ public class LoginServiceImplTest {
         mockUser.setPassword("password123");
         mockUser.setFailTries(0);
 
-        Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
+        when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             assertFalse(loginServiceImpl.authenticateUser(new LoginForm(null, "")));
@@ -152,7 +155,7 @@ public class LoginServiceImplTest {
         mockUser.setPassword("password123");
         mockUser.setFailTries(0);
 
-        Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
+        when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             assertFalse(loginServiceImpl.authenticateUser(new LoginForm("test@example.com", null)));
@@ -168,7 +171,7 @@ public class LoginServiceImplTest {
         mockUser.setPassword("password123");
         mockUser.setFailTries(0);
 
-        Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
+        when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             assertFalse(loginServiceImpl.authenticateUser(new LoginForm(null, null)));
@@ -184,12 +187,26 @@ public class LoginServiceImplTest {
         mockUser.setPassword("password123");
         mockUser.setFailTries(0);
 
-        Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
+        when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             assertFalse(loginServiceImpl.authenticateUser(new LoginForm()));
         });
 
         assertEquals("E-mail e Senha são obrigatórios!", exception.getMessage());
+    }
+
+    @Test
+    public void testBlockedUser() {
+        User mockUser = new User();
+        mockUser.setEmail("test@example.com");
+        mockUser.setPassword("password123");
+        mockUser.setFailTries(6);
+        mockUser.setBlockingDatetime(LocalDateTime.now().plusHours(3));
+        when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
+
+        LoginForm loginForm = new LoginForm("test@example.com", "password123");
+
+        assertThrows(RuntimeException.class, () -> loginServiceImpl.authenticateUser(loginForm));
     }
 }
