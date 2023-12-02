@@ -36,6 +36,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> updateUserById(Long id, UserForm form) {
         Optional<User> optionalUser = userRepository.findById(id);
+
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             user.setName(form.getName());

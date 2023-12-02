@@ -103,4 +103,30 @@ public class UserControllerIT {
         mockMvc.perform(MockMvcRequestBuilders.delete("/users/1"))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    public void testGetUserByIdNotExistingUser() throws Exception {
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/1"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testUpdateUserByIdNonExistingUser() throws Exception {
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/users/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(validUserForm)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testDeleteUserByIdNonExistingUser() throws Exception {
+        when(userRepository.existsById(1L)).thenReturn(false);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/users/-1"))
+                .andExpect(status().isNotFound());
+    }
 }
