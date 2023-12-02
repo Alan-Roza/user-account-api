@@ -1,5 +1,6 @@
 package com.projects.userAccountApi.controller.form;
 
+import com.projects.userAccountApi.contract.Login;
 import com.projects.userAccountApi.model.User;
 import com.projects.userAccountApi.repository.UserRepository;
 
@@ -8,6 +9,12 @@ public class UserForm {
 	private String name;
 	private String email;
 	private String password;
+
+	public UserForm(String name, String email, String password) {
+		this.name = name;
+		this.email = email;
+		this.password = password;
+	}
 	
 	public String getName() {
 		return name;

@@ -46,23 +46,17 @@ public class LoginControllerIT {
 
     @BeforeEach
     public void setup() {
-        // Initialize mocks
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
     public void testValidLogin() throws Exception {
-        // Set up a valid LoginForm for testing
         validLoginForm = new LoginForm("test@example.com", "password123");
 
-        // Set up a valid User for testing
         mockUser = new User("John Doe", "test@example.com", "password123", null);
-        // Mock the userRepository to return a user
         when(userRepository.findByEmail(validLoginForm.getEmail())).thenReturn(mockUser);
-        // Mock the authentication service to return true
         when(loginService.authenticateUser(validLoginForm)).thenReturn(true);
 
-        // Perform the POST request
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(validLoginForm)))
@@ -74,16 +68,11 @@ public class LoginControllerIT {
 
     @Test
     public void testInvalidLogin() throws Exception {
-        // Set up an invalid LoginForm for testing
         validLoginForm = new LoginForm("test@example.com", "password1234");
-        // Set up an invalid User for testing
         mockUser = new User("John Doe", "test@example.com", "password1234", null);
-        // Mock the userRepository to return a user
         when(userRepository.findByEmail(validLoginForm.getEmail())).thenReturn(mockUser);
-        // Mock the authentication service to return false
         when(loginService.authenticateUser(validLoginForm)).thenReturn(false);
 
-        // Perform the POST request
         mockMvc.perform(MockMvcRequestBuilders.post("/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(validLoginForm)))
