@@ -98,6 +98,7 @@ class UserServiceImplTest {
         Optional<User> result = userService.updateUserById(userId, userForm);
 
         // Then
+
         assertTrue(result.isPresent());
         assertEquals(mockUser, result.get());
 

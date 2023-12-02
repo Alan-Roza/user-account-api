@@ -78,7 +78,7 @@ public class LoginServiceImplTest {
     }
 
     @Test
-    public void unsuccessfulLoginWithEmptyField() {
+    public void testUnsuccessfulLoginWithEmptyPasswordField() {
         User mockUser = new User();
         mockUser.setEmail("test@example.com");
         mockUser.setPassword("password123");
@@ -88,10 +88,85 @@ public class LoginServiceImplTest {
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             assertFalse(loginServiceImpl.authenticateUser(new LoginForm("test@example.com", "")));
+        });
+
+        assertEquals("E-mail e Senha são obrigatórios!", exception.getMessage());
+    }
+
+    @Test
+    public void testUnsuccessfulLoginWithEmptyEmailField() {
+        User mockUser = new User();
+        mockUser.setEmail("test@example.com");
+        mockUser.setPassword("password123");
+        mockUser.setFailTries(0);
+
+        Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             assertFalse(loginServiceImpl.authenticateUser(new LoginForm("", "password123")));
+        });
+
+        assertEquals("E-mail e Senha são obrigatórios!", exception.getMessage());
+    }
+
+    @Test
+    public void testUnsuccessfulLoginWithEmptyEmailAndPasswordFields() {
+        User mockUser = new User();
+        mockUser.setEmail("test@example.com");
+        mockUser.setPassword("password123");
+        mockUser.setFailTries(0);
+
+        Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             assertFalse(loginServiceImpl.authenticateUser(new LoginForm("", "")));
+        });
+
+        assertEquals("E-mail e Senha são obrigatórios!", exception.getMessage());
+    }
+
+    @Test
+    public void testUnsuccessfulLoginWithNullEmailField() {
+        User mockUser = new User();
+        mockUser.setEmail("test@example.com");
+        mockUser.setPassword("password123");
+        mockUser.setFailTries(0);
+
+        Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             assertFalse(loginServiceImpl.authenticateUser(new LoginForm(null, "")));
+        });
+
+        assertEquals("E-mail e Senha são obrigatórios!", exception.getMessage());
+    }
+
+    @Test
+    public void testUnsuccessfulLoginWithNullPasswordField() {
+        User mockUser = new User();
+        mockUser.setEmail("test@example.com");
+        mockUser.setPassword("password123");
+        mockUser.setFailTries(0);
+
+        Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             assertFalse(loginServiceImpl.authenticateUser(new LoginForm("test@example.com", null)));
+        });
+
+        assertEquals("E-mail e Senha são obrigatórios!", exception.getMessage());
+    }
+
+    @Test
+    public void testUnsuccessfulLoginWithNullEmailAndPasswordFields() {
+        User mockUser = new User();
+        mockUser.setEmail("test@example.com");
+        mockUser.setPassword("password123");
+        mockUser.setFailTries(0);
+
+        Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             assertFalse(loginServiceImpl.authenticateUser(new LoginForm(null, null)));
         });
 
