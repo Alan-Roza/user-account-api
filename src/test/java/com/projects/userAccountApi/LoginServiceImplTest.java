@@ -172,4 +172,20 @@ public class LoginServiceImplTest {
 
         assertEquals("E-mail e Senha são obrigatórios!", exception.getMessage());
     }
+
+    @Test
+    public void testUnsuccessfulLoginWithoutFields() {
+        User mockUser = new User();
+        mockUser.setEmail("test@example.com");
+        mockUser.setPassword("password123");
+        mockUser.setFailTries(0);
+
+        Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            assertFalse(loginServiceImpl.authenticateUser(new LoginForm()));
+        });
+
+        assertEquals("E-mail e Senha são obrigatórios!", exception.getMessage());
+    }
 }
