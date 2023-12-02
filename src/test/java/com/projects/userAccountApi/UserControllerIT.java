@@ -79,8 +79,7 @@ public class UserControllerIT {
         mockUser = new User("John Doe two", "test2@example.com", "password123", null);
         when(userRepository.findById(2L)).thenReturn(Optional.ofNullable(mockUser));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/2" +
-                        ""))
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/2"))
                 .andExpect(status().isOk());
     }
 

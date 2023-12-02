@@ -5,7 +5,7 @@ import com.projects.userAccountApi.controller.LoginController;
 import com.projects.userAccountApi.controller.form.LoginForm;
 import com.projects.userAccountApi.model.User;
 import com.projects.userAccountApi.repository.UserRepository;
-import com.projects.userAccountApi.service.LoginService;
+import com.projects.userAccountApi.service.impl.LoginServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -36,7 +36,7 @@ public class LoginControllerIT {
     private UserRepository userRepository;
 
     @Mock
-    private LoginService loginService;
+    private LoginServiceImpl loginServiceImpl;
 
     @InjectMocks
     private LoginController loginController;
@@ -55,7 +55,7 @@ public class LoginControllerIT {
 
         mockUser = new User("John Doe", "test@example.com", "password123", null);
         when(userRepository.findByEmail(validLoginForm.getEmail())).thenReturn(mockUser);
-        when(loginService.authenticateUser(validLoginForm)).thenReturn(true);
+        when(loginServiceImpl.authenticateUser(validLoginForm)).thenReturn(true);
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -71,7 +71,7 @@ public class LoginControllerIT {
         validLoginForm = new LoginForm("test@example.com", "password1234");
         mockUser = new User("John Doe", "test@example.com", "password1234", null);
         when(userRepository.findByEmail(validLoginForm.getEmail())).thenReturn(mockUser);
-        when(loginService.authenticateUser(validLoginForm)).thenReturn(false);
+        when(loginServiceImpl.authenticateUser(validLoginForm)).thenReturn(false);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/login")
                         .contentType(MediaType.APPLICATION_JSON)

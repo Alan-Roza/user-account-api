@@ -7,21 +7,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projects.userAccountApi.controller.form.LoginForm;
-import com.projects.userAccountApi.service.LoginService;
+import com.projects.userAccountApi.service.impl.LoginServiceImpl;
 
 
 @RestController
 public class LoginController {
 
     @Autowired
-    private LoginService loginService;
+    private LoginServiceImpl loginServiceImpl;
     
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginForm login) {
     	try {
     		validateFields(login);
     		
-    		if (loginService.authenticateUser(login)) {
+    		if (loginServiceImpl.authenticateUser(login)) {
     			return ResponseEntity.ok("Login realizado com sucesso!");
     		} else {
     			return ResponseEntity.status(401).body("Credenciais inválidas.");

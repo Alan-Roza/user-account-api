@@ -9,7 +9,7 @@ import org.mockito.MockitoAnnotations;
 import org.junit.jupiter.api.BeforeEach;
 
 import com.projects.userAccountApi.repository.UserRepository;
-import com.projects.userAccountApi.service.LoginService;
+import com.projects.userAccountApi.service.impl.LoginServiceImpl;
 import com.projects.userAccountApi.controller.form.LoginForm;
 import com.projects.userAccountApi.model.User;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class LoginServiceTest {
 
     @InjectMocks
-    private LoginService loginService;
+    private LoginServiceImpl loginServiceImpl;
 
     @Mock
     private UserRepository userRepository;
@@ -37,7 +37,7 @@ public class LoginServiceTest {
 
         Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
 
-        boolean isUserAuthenticated = loginService.authenticateUser(new LoginForm("test@example.com", "password123"));
+        boolean isUserAuthenticated = loginServiceImpl.authenticateUser(new LoginForm("test@example.com", "password123"));
 
         assertTrue(isUserAuthenticated);
     }
@@ -51,7 +51,7 @@ public class LoginServiceTest {
 
         Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
 
-        boolean isUserAuthenticated = loginService.authenticateUser(new LoginForm("test@example.com", "wrongpassword"));
+        boolean isUserAuthenticated = loginServiceImpl.authenticateUser(new LoginForm("test@example.com", "wrongpassword"));
 
         assertFalse(isUserAuthenticated);
     }
@@ -69,7 +69,7 @@ public class LoginServiceTest {
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             for (int i = 0; i <= attemptsLimit; i++) {
-                boolean isUserAuthenticated = loginService.authenticateUser(new LoginForm("test@example.com", "wrongpassword"));
+                boolean isUserAuthenticated = loginServiceImpl.authenticateUser(new LoginForm("test@example.com", "wrongpassword"));
                 assertFalse(isUserAuthenticated);
             }
         });
@@ -87,12 +87,12 @@ public class LoginServiceTest {
         Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            assertFalse(loginService.authenticateUser(new LoginForm("test@example.com", "")));
-            assertFalse(loginService.authenticateUser(new LoginForm("", "password123")));
-            assertFalse(loginService.authenticateUser(new LoginForm("", "")));
-            assertFalse(loginService.authenticateUser(new LoginForm(null, "")));
-            assertFalse(loginService.authenticateUser(new LoginForm("test@example.com", null)));
-            assertFalse(loginService.authenticateUser(new LoginForm(null, null)));
+            assertFalse(loginServiceImpl.authenticateUser(new LoginForm("test@example.com", "")));
+            assertFalse(loginServiceImpl.authenticateUser(new LoginForm("", "password123")));
+            assertFalse(loginServiceImpl.authenticateUser(new LoginForm("", "")));
+            assertFalse(loginServiceImpl.authenticateUser(new LoginForm(null, "")));
+            assertFalse(loginServiceImpl.authenticateUser(new LoginForm("test@example.com", null)));
+            assertFalse(loginServiceImpl.authenticateUser(new LoginForm(null, null)));
         });
 
         assertEquals("E-mail e Senha são obrigatórios!", exception.getMessage());
