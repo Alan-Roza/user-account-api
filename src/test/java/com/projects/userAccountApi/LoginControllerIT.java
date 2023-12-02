@@ -59,13 +59,11 @@ public class LoginControllerIT {
         when(userRepository.findByEmail(validLoginForm.getEmail())).thenReturn(mockUser);
         when(loginServiceImpl.authenticateUser(validLoginForm)).thenReturn(true);
 
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/login")
+        mockMvc.perform(MockMvcRequestBuilders.post("/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(validLoginForm)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Login realizado com sucesso!"))
-                .andReturn();
-
+                .andExpect(content().string("Login realizado com sucesso!"));
     }
 
     @Test
@@ -83,42 +81,46 @@ public class LoginControllerIT {
     }
 
     @Test
-    public void testLoginWithNullEmail() {
+    public void testLoginWithNullEmail() throws Exception {
         LoginForm login = new LoginForm(null, "password123");
 
-        ResponseEntity<String> response = loginController.login(login);
-
-        assertEquals(400, response.getStatusCodeValue());
-        assertEquals("E-mail e Senha são obrigatórios!", response.getBody());
+        mockMvc.perform(MockMvcRequestBuilders.post("/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(login)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("E-mail e Senha são obrigatórios!"));
     }
 
     @Test
-    public void testLoginWithEmptyEmail() {
+    public void testLoginWithEmptyEmail() throws Exception {
         LoginForm login = new LoginForm("", "password123");
 
-        ResponseEntity<String> response = loginController.login(login);
-
-        assertEquals(400, response.getStatusCodeValue());
-        assertEquals("E-mail e Senha são obrigatórios!", response.getBody());
+        mockMvc.perform(MockMvcRequestBuilders.post("/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(login)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("E-mail e Senha são obrigatórios!"));
     }
 
     @Test
-    public void testLoginWithNullPassword() {
+    public void testLoginWithNullPassword() throws Exception {
         LoginForm login = new LoginForm("test@example.com", null);
 
-        ResponseEntity<String> response = loginController.login(login);
-
-        assertEquals(400, response.getStatusCodeValue());
-        assertEquals("E-mail e Senha são obrigatórios!", response.getBody());
+        mockMvc.perform(MockMvcRequestBuilders.post("/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(login)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("E-mail e Senha são obrigatórios!"));
     }
 
     @Test
-    public void testLoginWithEmptyPassword() {
+    public void testLoginWithEmptyPassword() throws Exception {
         LoginForm login = new LoginForm("test@example.com", "");
 
-        ResponseEntity<String> response = loginController.login(login);
-
-        assertEquals(400, response.getStatusCodeValue());
-        assertEquals("E-mail e Senha são obrigatórios!", response.getBody());
+        mockMvc.perform(MockMvcRequestBuilders.post("/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(login)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("E-mail e Senha são obrigatórios!"));
     }
 }
