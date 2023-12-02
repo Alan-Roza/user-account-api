@@ -1,5 +1,6 @@
 package com.projects.userAccountApi;
 
+import com.projects.userAccountApi.controller.LoginController;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.mockito.InjectMocks;
@@ -22,6 +23,9 @@ public class LoginServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @InjectMocks
+    private LoginController loginController;
 
     @BeforeEach
     public void setup() {
