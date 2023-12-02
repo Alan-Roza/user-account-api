@@ -105,7 +105,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void deleteUserById_UserNotFound() {
+    void deleteUserByIdUserNotFound() {
         Long userId = 1L;
         when(userRepository.existsById(userId)).thenReturn(false);
 

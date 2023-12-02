@@ -209,4 +209,18 @@ public class LoginServiceImplTest {
 
         assertThrows(RuntimeException.class, () -> loginServiceImpl.authenticateUser(loginForm));
     }
+
+    @Test
+    public void testAfterBlockedUser() {
+        User mockUser = new User();
+        mockUser.setEmail("test@example.com");
+        mockUser.setPassword("password123");
+        mockUser.setFailTries(6);
+        mockUser.setBlockingDatetime(LocalDateTime.now().minusHours(4));
+        when(userRepository.findByEmail("test@example.com")).thenReturn(mockUser);
+
+        LoginForm loginForm = new LoginForm("test@example.com", "password123");
+
+        assertTrue(loginServiceImpl.authenticateUser(loginForm));
+    }
 }
