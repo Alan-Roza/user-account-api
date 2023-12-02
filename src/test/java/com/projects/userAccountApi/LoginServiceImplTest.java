@@ -14,8 +14,8 @@ import com.projects.userAccountApi.controller.form.LoginForm;
 import com.projects.userAccountApi.model.User;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = LoginServiceTest.class)
-public class LoginServiceTest {
+@SpringBootTest(classes = LoginServiceImplTest.class)
+public class LoginServiceImplTest {
 
     @InjectMocks
     private LoginServiceImpl loginServiceImpl;
