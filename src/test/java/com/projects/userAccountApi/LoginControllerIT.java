@@ -120,4 +120,5 @@ public class LoginControllerIT {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("E-mail e Senha são obrigatórios!"));
     }
+
 }
